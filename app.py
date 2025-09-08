@@ -1,16 +1,18 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 import os
 
 app = Flask(__name__)
 
-DB_URL = os.environ.get("DATABASE_URL", "sqlite:///inventario.db")
+DB_URL = os.environ.get("DATABASE_URL", "sqlite:////tmp/inventario.db")
 app.config["SQLALCHEMY_DATABASE_URI"] = DB_URL
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
 db = SQLAlchemy(app)
 
 from flask_migrate import Migrate
-Migrate = Migrate(app, db)
+migrate = Migrate(app, db)
 
 with app.app_context():
     db.create_all()
